@@ -332,6 +332,11 @@ input:focus {
     background-color: rgba(0, 243, 255, 0.3) !important;
 }
 
+.square.capture-move {
+    background-color: rgba(255, 50, 50, 0.4) !important;
+    box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.6);
+}
+
 .square.in-check {
     background-color: rgba(255, 0, 0, 0.5) !important;
     box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.8);
