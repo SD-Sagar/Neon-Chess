@@ -331,7 +331,7 @@ class UIController {
 
     renderHighlights() {
         document.querySelectorAll('.square').forEach(sq => {
-            sq.classList.remove('selected', 'valid-move');
+            sq.classList.remove('selected', 'valid-move', 'capture-move');
             if (sq.dataset.square === this.app.selectedSquare) {
                 sq.classList.add('selected');
             }
@@ -341,7 +341,13 @@ class UIController {
             const moves = this.app.game.moves({ square: this.app.selectedSquare, verbose: true });
             moves.forEach(m => {
                 const target = document.querySelector(`.square[data-square="${m.to}"]`);
-                if (target) target.classList.add('valid-move');
+                if (target) {
+                    if (m.flags.includes('c') || m.flags.includes('e')) {
+                        target.classList.add('capture-move');
+                    } else {
+                        target.classList.add('valid-move');
+                    }
+                }
             });
         }
     }
