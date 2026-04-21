@@ -1,0 +1,383 @@
+:root {
+    --bg-color: #0a0a1a;
+    --panel-bg: rgba(20, 20, 40, 0.8);
+    --border-color: #333366;
+    --text-main: #e0e0ff;
+    
+    --cyan: #00f3ff;
+    --pink: #ff00e4;
+    --lime: #39ff14;
+    
+    --board-dark: #1a1a3a;
+    --board-light: #2a2a5a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+        linear-gradient(rgba(10, 10, 26, 0.9), rgba(10, 10, 26, 0.9)),
+        url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 39.5h40M39.5 0v40" stroke="rgba(51, 51, 102, 0.2)" stroke-width="1"/></svg>');
+}
+
+h1, h2 {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1400px;
+    height: 100vh;
+    padding: 5px; /* Reduced padding for mobile */
+    gap: 10px; /* Reduced gap for mobile */
+}
+
+@media (min-width: 900px) {
+    #app {
+        flex-direction: row;
+        height: 90vh;
+        padding: 20px;
+        gap: 15px;
+    }
+}
+
+/* Sidebars */
+aside {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px; /* Smaller padding on mobile */
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Smaller gap on mobile */
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+}
+
+#sidebar {
+    flex: 1;
+    min-width: unset; /* Let it shrink on mobile */
+    order: 2; /* Move below board on mobile */
+}
+
+#history-sidebar {
+    flex: 1;
+    min-width: unset;
+    overflow-y: auto;
+    max-height: 150px; /* Limit height on mobile */
+    order: 3;
+}
+
+.menu-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-section h2 {
+    font-size: 0.85rem;
+    color: var(--cyan);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2px;
+    width: 100%;
+    text-align: center;
+}
+
+@media (min-width: 900px) {
+    aside {
+        padding: 20px;
+        gap: 20px;
+    }
+    #sidebar {
+        min-width: 250px;
+        order: unset;
+    }
+    #history-sidebar {
+        min-width: 200px;
+        max-height: unset;
+        order: unset;
+    }
+    .menu-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .menu-section h2 {
+        font-size: 1rem;
+        text-align: left;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Glow Text Utilities */
+.glow-text {
+    color: #fff;
+    text-shadow: 0 0 5px #fff, 0 0 10px var(--cyan), 0 0 20px var(--cyan), 0 0 40px var(--cyan);
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 1.2rem; /* Smaller on mobile */
+}
+@media (min-width: 900px) {
+    .glow-text {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+}
+.glow-text-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan), 0 0 10px var(--cyan);
+}
+.glow-text-pink {
+    color: var(--pink);
+    text-shadow: 0 0 5px var(--pink), 0 0 10px var(--pink);
+}
+
+/* Buttons and Inputs */
+button {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 6px 10px; /* Smaller on mobile */
+    border-radius: 6px;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.7rem; /* Smaller on mobile */
+    flex: 1 1 auto;
+}
+
+@media (min-width: 900px) {
+    button {
+        padding: 10px 15px;
+        font-size: 0.85rem;
+    }
+}
+
+button:hover {
+    background: rgba(0, 243, 255, 0.1);
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+button.active {
+    background: rgba(0, 243, 255, 0.2);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+}
+
+input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    color: var(--cyan);
+    padding: 6px 10px; /* Smaller on mobile */
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    font-size: 0.8rem;
+    width: 100%;
+}
+@media (min-width: 900px) {
+    input {
+        padding: 10px;
+        font-size: 1rem;
+    }
+}
+input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+}
+
+/* Main Game Area */
+#game-area {
+    flex: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Smaller gap */
+    order: 1; /* Ensure board is top on mobile */
+}
+
+@media (min-width: 900px) {
+    #game-area {
+        flex: 3;
+        gap: 15px;
+        order: unset;
+    }
+}
+
+.player-info {
+    width: 100%;
+    max-width: 600px;
+    min-height: 25px; /* Smaller on mobile */
+    display: flex;
+    align-items: center;
+    padding: 0 5px; /* Smaller padding */
+    background: var(--panel-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+@media (min-width: 900px) {
+    .player-info {
+        min-height: 40px;
+        padding: 0 10px;
+    }
+}
+
+.captured-pieces {
+    display: flex;
+    gap: 2px;
+    font-size: 0.9rem; /* Smaller on mobile */
+}
+@media (min-width: 900px) {
+    .captured-pieces {
+        gap: 5px;
+        font-size: 1.2rem;
+    }
+}
+.captured-pieces .fa-chess-pawn,
+.captured-pieces .fa-chess-knight,
+.captured-pieces .fa-chess-bishop,
+.captured-pieces .fa-chess-rook,
+.captured-pieces .fa-chess-queen {
+    text-shadow: 0 0 5px currentColor;
+}
+#captured-white { color: var(--cyan); }
+#captured-black { color: var(--pink); }
+
+/* Chessboard */
+#board-container {
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 1 / 1;
+    border: 4px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.2), 0 0 30px rgba(255, 0, 228, 0.2);
+    position: relative;
+}
+
+#chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+@media (min-width: 600px) {
+    .square { font-size: 3.5rem; }
+}
+
+.square.light {
+    background-color: var(--board-light);
+}
+
+.square.dark {
+    background-color: var(--board-dark);
+}
+
+.square.selected {
+    background-color: rgba(57, 255, 20, 0.4) !important;
+    box-shadow: inset 0 0 15px var(--lime);
+}
+
+.square.valid-move::after {
+    content: '';
+    position: absolute;
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+    background-color: var(--lime);
+    box-shadow: 0 0 10px var(--lime);
+    opacity: 0.8;
+}
+
+.square.last-move {
+    background-color: rgba(0, 243, 255, 0.3) !important;
+}
+
+/* Pieces */
+.piece {
+    transition: transform 0.2s ease;
+    z-index: 10;
+}
+
+.piece:hover {
+    transform: scale(1.1);
+}
+
+.piece.white {
+    color: #fff;
+    text-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+}
+
+.piece.black {
+    color: #fff;
+    text-shadow: 0 0 10px var(--pink), 0 0 20px var(--pink);
+}
+
+/* Move History */
+#move-history {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: 'Inter', monospace;
+    font-size: 0.9rem;
+}
+
+.history-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+}
+.history-row span {
+    flex: 1;
+    text-align: center;
+}
+.history-row span:first-child {
+    color: #888;
+    flex: 0.5;
+}
+.history-row span:nth-child(2) {
+    color: var(--cyan);
+}
+.history-row span:nth-child(3) {
+    color: var(--pink);
+}

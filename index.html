@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Cyberpunk Chess</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Chess Pieces -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Sidebar Menu -->
+        <aside id="sidebar">
+            <h1 class="glow-text">NEON CHESS</h1>
+            <div class="menu-section">
+                <h2>Game Mode</h2>
+                <button id="btn-1vc" class="active">Player vs AI</button>
+                <button id="btn-cvc">AI vs AI</button>
+                <button id="btn-online">Online 1v1</button>
+            </div>
+            
+            <div id="online-controls" class="menu-section hidden">
+                <h2>Multiplayer</h2>
+                <p>Your ID: <span id="my-id" class="glow-text-cyan">Connecting...</span></p>
+                <input type="text" id="peer-id-input" placeholder="Enter Friend's ID">
+                <button id="btn-connect">Connect</button>
+                <p id="connection-status"></p>
+            </div>
+
+            <div class="menu-section">
+                <h2>Actions</h2>
+                <button id="btn-redo">Redo Move</button>
+                <button id="btn-hint">Auto-Solve</button>
+                <button id="btn-reset">Reset Game</button>
+            </div>
+
+            <div class="menu-section status-section">
+                <h2>Status</h2>
+                <p id="turn-indicator" class="glow-text-cyan">White's Turn</p>
+                <p id="game-status"></p>
+            </div>
+        </aside>
+
+        <!-- Main Game Area -->
+        <main id="game-area">
+            <div class="player-info opponent-info">
+                <div class="captured-pieces" id="captured-black"></div>
+            </div>
+            
+            <div id="board-container">
+                <div id="chessboard"></div>
+            </div>
+
+            <div class="player-info player-info-bottom">
+                <div class="captured-pieces" id="captured-white"></div>
+            </div>
+        </main>
+
+        <!-- Move History Sidebar -->
+        <aside id="history-sidebar">
+            <h2>Move History</h2>
+            <div id="move-history"></div>
+        </aside>
+    </div>
+
+    <!-- Libraries -->
+    <!-- Note: chess.js v0.10.3 uses ES5. It provides a global Chess object. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.0/dist/peerjs.min.js"></script>
+    <!-- Custom Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
