@@ -250,6 +250,7 @@ input:focus {
 
 .captured-pieces {
     display: flex;
+    flex-wrap: wrap; /* Add wrap */
     gap: 2px;
     font-size: 0.9rem; /* Smaller on mobile */
 }
@@ -331,10 +332,27 @@ input:focus {
     background-color: rgba(0, 243, 255, 0.3) !important;
 }
 
+.square.in-check {
+    background-color: rgba(255, 0, 0, 0.5) !important;
+    box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.8);
+}
+
 /* Pieces */
 .piece {
-    transition: transform 0.2s ease;
+    position: absolute;
+    width: 12.5%;
+    height: 12.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, left 0.3s ease-in-out, top 0.3s ease-in-out;
     z-index: 10;
+    pointer-events: none; /* Let clicks pass to the square */
+    font-size: 2rem;
+}
+
+@media (min-width: 600px) {
+    .piece { font-size: 3.5rem; }
 }
 
 .piece:hover {
