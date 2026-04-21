@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play a fully functional Cyberpunk Neon themed Chess game. Play against a Minimax AI, watch AI vs AI, or connect with friends for 1v1 Online Multiplayer using WebRTC.">
+    <meta name="keywords" content="chess, neon chess, cyberpunk chess, javascript chess, multiplayer chess, online chess, minimax AI">
+    <meta property="og:title" content="Neon Cyberpunk Chess">
+    <meta property="og:description" content="Play a fully functional Cyberpunk Neon themed Chess game against AI or friends online.">
+    <meta property="og:type" content="website">
     <title>Neon Cyberpunk Chess</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
@@ -40,13 +45,13 @@
 
             <div class="menu-section status-section">
                 <h2>Status</h2>
-                <p id="turn-indicator" class="glow-text-cyan">White's Turn</p>
-                <p id="game-status"></p>
+                <p id="turn-indicator" class="glow-text-cyan" aria-live="polite">White's Turn</p>
+                <p id="game-status" aria-live="polite"></p>
             </div>
         </aside>
 
         <!-- Main Game Area -->
-        <main id="game-area">
+        <main id="game-area" role="application" aria-label="Chess Game">
             <div class="player-info opponent-info">
                 <div class="captured-pieces" id="captured-black"></div>
             </div>
