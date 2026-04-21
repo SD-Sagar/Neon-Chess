@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Play a fully functional Cyberpunk Neon themed Chess game. Play against a Minimax AI, watch AI vs AI, or connect with friends for 1v1 Online Multiplayer using WebRTC.">
-    <meta name="keywords" content="chess, neon chess, cyberpunk chess, javascript chess, multiplayer chess, online chess, minimax AI">
+    <meta name="description"
+        content="Play a fully functional Cyberpunk Neon themed Chess game. Play against a Minimax AI, watch AI vs AI, or connect with friends for 1v1 Online Multiplayer using WebRTC.">
+    <meta name="keywords"
+        content="chess, neon chess, cyberpunk chess, javascript chess, multiplayer chess, online chess, minimax AI">
     <meta property="og:title" content="Neon Cyberpunk Chess">
-    <meta property="og:description" content="Play a fully functional Cyberpunk Neon themed Chess game against AI or friends online.">
+    <meta property="og:description"
+        content="Play a fully functional Cyberpunk Neon themed Chess game against AI or friends online.">
     <meta property="og:type" content="website">
     <title>Neon Cyberpunk Chess</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome for Chess Pieces -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
+
 <body>
     <div id="app">
         <!-- Sidebar Menu -->
         <aside id="sidebar">
             <h1 class="glow-text">NEON CHESS</h1>
-            <div class="menu-section">
+            <div class="menu-section mode-section">
                 <h2>Game Mode</h2>
                 <button id="btn-1vc" class="active">Player vs AI</button>
                 <button id="btn-cvc">AI vs AI</button>
                 <button id="btn-online">Online 1v1</button>
             </div>
-            
+
             <div id="online-controls" class="menu-section hidden">
                 <h2>Multiplayer</h2>
                 <p>Your ID: <span id="my-id" class="glow-text-cyan">Connecting...</span></p>
@@ -36,7 +42,7 @@
                 <p id="connection-status"></p>
             </div>
 
-            <div class="menu-section">
+            <div class="menu-section actions-section">
                 <h2>Actions</h2>
                 <button id="btn-redo">Redo Move</button>
                 <button id="btn-hint">Auto-Solve</button>
@@ -55,7 +61,7 @@
             <div class="player-info opponent-info">
                 <div class="captured-pieces" id="captured-black"></div>
             </div>
-            
+
             <div id="board-container">
                 <div id="chessboard"></div>
             </div>
@@ -79,4 +85,5 @@
     <!-- Custom Logic -->
     <script src="script.js"></script>
 </body>
+
 </html>

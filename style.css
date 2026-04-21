@@ -75,6 +75,13 @@ aside {
     order: 2; /* Move below board on mobile */
 }
 
+/* Reorder sidebar sections for mobile */
+#sidebar h1 { order: 1; }
+#sidebar .status-section { order: 2; }
+#sidebar .actions-section { order: 3; }
+#sidebar .mode-section { order: 4; }
+#sidebar #online-controls { order: 5; }
+
 #history-sidebar {
     flex: 1;
     min-width: unset;
@@ -108,6 +115,14 @@ aside {
     }
     #sidebar {
         min-width: 250px;
+        order: unset;
+    }
+    /* Reset sidebar reordering on PC */
+    #sidebar h1, 
+    #sidebar .status-section, 
+    #sidebar .actions-section, 
+    #sidebar .mode-section, 
+    #sidebar #online-controls {
         order: unset;
     }
     #history-sidebar {
