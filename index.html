@@ -78,6 +78,24 @@
         </aside>
     </div>
 
+    <!-- Welcome Modal -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h1 class="glow-text">NEON CHESS</h1>
+            <p class="author-text">Made with <span style="color: var(--pink)">❤</span> by dev sAgar</p>
+            <button id="btn-continue" class="modal-btn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1 id="game-over-title" class="glow-text">GAME OVER</h1>
+            <p id="game-over-message" class="game-over-text"></p>
+            <button id="btn-play-again" class="modal-btn">Play Again</button>
+        </div>
+    </div>
+
     <!-- Libraries -->
     <!-- Note: chess.js v0.10.3 uses ES5. It provides a global Chess object. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>

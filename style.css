@@ -419,3 +419,63 @@ input:focus {
 .history-row span:nth-child(3) {
     color: var(--pink);
 }
+
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--panel-bg);
+    border: 2px solid var(--cyan);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+    max-width: 90%;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.author-text {
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+.game-over-text {
+    font-size: 1.5rem;
+    color: var(--lime);
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+.modal-btn {
+    font-size: 1.2rem;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+/* King Juggle/Glow Animation */
+@keyframes juggle {
+    0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 0px red); }
+    25% { transform: scale(1.2) rotate(-15deg); filter: drop-shadow(0 0 20px red); }
+    50% { transform: scale(1.2) rotate(15deg); filter: drop-shadow(0 0 20px red); }
+    75% { transform: scale(1.2) rotate(-15deg); filter: drop-shadow(0 0 20px red); }
+    100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 0px red); }
+}
+
+.juggle-glow {
+    animation: juggle 0.5s ease-in-out;
+}
+
