@@ -1,6 +1,7 @@
 class ChessApp {
     constructor() {
         this.game = new Chess();
+        this.audio = new AudioController();
         this.ui = new UIController(this);
         this.ai = new AIController(this);
         this.network = new NetworkManager(this);
@@ -18,6 +19,22 @@ class ChessApp {
         this.ui.setupEventListeners();
         this.ui.fullRender();
         this.ui.updateUI();
+        this.setupModals();
+    }
+    
+    setupModals() {
+        const welcomeModal = document.getElementById('welcome-modal');
+        const btnContinue = document.getElementById('btn-continue');
+        
+        btnContinue.addEventListener('click', () => {
+            welcomeModal.classList.add('hidden');
+            this.audio.playBgMusic();
+        });
+
+        document.getElementById('btn-play-again').addEventListener('click', () => {
+            document.getElementById('game-over-modal').classList.add('hidden');
+            this.resetGame();
+        });
     }
     
     setMode(mode) {
@@ -69,18 +86,29 @@ class ChessApp {
                 const piece = this.game.get(squareName);
                 if (piece && piece.color === this.game.turn()) {
                     this.selectedSquare = squareName;
+                    this.audio.playSound('select');
                     this.ui.renderHighlights();
                 } else {
                     this.selectedSquare = null;
                     this.ui.renderHighlights();
+                    this.checkJuggleKing();
                 }
             }
         } else {
             const piece = this.game.get(squareName);
             if (piece && piece.color === this.game.turn()) {
                 this.selectedSquare = squareName;
+                this.audio.playSound('select');
                 this.ui.renderHighlights();
+            } else {
+                this.checkJuggleKing();
             }
+        }
+    }
+    
+    checkJuggleKing() {
+        if (this.game.in_check()) {
+            this.ui.juggleKing(this.game.turn());
         }
     }
     
@@ -98,12 +126,18 @@ class ChessApp {
             return;
         }
         
+        if (this.game.in_check()) {
+            this.audio.playSound('check');
+        }
+        
         if (this.currentMode === '1vc' && this.game.turn() !== this.playerColor) {
             setTimeout(() => this.ai.makeMove(), 400);
         }
     }
     
     resetGame() {
+        if (this.ui.gameOverTimeout) clearTimeout(this.ui.gameOverTimeout);
+        document.getElementById('game-over-modal').classList.add('hidden');
         this.game.reset();
         this.selectedSquare = null;
         if (this.cvcInterval) clearInterval(this.cvcInterval);
@@ -263,12 +297,21 @@ class UIController {
         if (this.pieces[move.to]) {
             this.pieces[move.to].remove();
         }
-        if (move.flags.includes('e')) {
-            const capturedSq = move.to[0] + move.from[1];
+        
+        let isCapture = false;
+        if (move.flags.includes('c') || move.flags.includes('e')) {
+            isCapture = true;
+            const capturedSq = move.to[0] + (move.flags.includes('e') ? move.from[1] : move.to[1]);
             if (this.pieces[capturedSq]) {
                 this.pieces[capturedSq].remove();
                 delete this.pieces[capturedSq];
             }
+        }
+        
+        if (isCapture) {
+            this.app.audio.playSound('knock');
+        } else {
+            this.app.audio.playSound('drop');
         }
         
         const targetPos = this.getSquarePos(move.to);
@@ -408,12 +451,54 @@ class UIController {
         }
     }
     
-    handleGameOver() {
-        if (this.app.game.in_checkmate()) {
-            this.els.gameStatus.textContent = `Checkmate! ${this.app.game.turn() === 'w' ? 'Black' : 'White'} wins.`;
-        } else if (this.app.game.in_draw() || this.app.game.in_stalemate() || this.app.game.in_threefold_repetition()) {
-            this.els.gameStatus.textContent = "Draw!";
+    juggleKing(color) {
+        const board = this.app.game.board();
+        let kingSq = null;
+        for(let r=0; r<8; r++) {
+            for(let c=0; c<8; c++) {
+                if(board[r][c] && board[r][c].type === 'k' && board[r][c].color === color) {
+                    kingSq = String.fromCharCode(97 + c) + (8 - r);
+                    break;
+                }
+            }
         }
+        if (kingSq && this.pieces[kingSq]) {
+            const kingEl = this.pieces[kingSq];
+            kingEl.classList.remove('juggle-glow');
+            // Trigger reflow to restart animation
+            void kingEl.offsetWidth;
+            kingEl.classList.add('juggle-glow');
+            setTimeout(() => {
+                kingEl.classList.remove('juggle-glow');
+            }, 500);
+        }
+    }
+
+    handleGameOver() {
+        let message = "";
+        let winner = "";
+        if (this.app.game.in_checkmate()) {
+            winner = this.app.game.turn() === 'w' ? 'Black' : 'White';
+            message = `Checkmate! ${winner} wins.`;
+        } else if (this.app.game.in_draw() || this.app.game.in_stalemate() || this.app.game.in_threefold_repetition()) {
+            message = "Draw!";
+        }
+
+        this.els.gameStatus.textContent = message;
+        
+        const modal = document.getElementById('game-over-modal');
+        const msgEl = document.getElementById('game-over-message');
+        msgEl.textContent = message;
+        modal.classList.remove('hidden');
+        
+        this.app.audio.playSound('conclusion');
+        
+        this.gameOverTimeout = setTimeout(() => {
+            if (!modal.classList.contains('hidden')) {
+                modal.classList.add('hidden');
+                this.app.resetGame();
+            }
+        }, 5000);
     }
     
     clearGameStatus() {
@@ -570,6 +655,40 @@ class NetworkManager {
     sendReset() {
         if (this.conn && this.conn.open) {
             this.conn.send({ type: 'reset' });
+        }
+    }
+}
+
+class AudioController {
+    constructor() {
+        this.bgMusic = new Audio('assets/BackgroundMusic.mp3');
+        this.bgMusic.volume = 0.35;
+        
+        // Aggressive gapless looping (skipping the ~11 seconds of silence at the end of the MP3)
+        // Added a check for duration > 12 to prevent infinite loop if the audio isn't fully loaded
+        this.bgMusic.addEventListener('timeupdate', () => {
+            if (this.bgMusic.duration > 12 && this.bgMusic.currentTime >= this.bgMusic.duration - 11.5) {
+                this.bgMusic.currentTime = 0;
+            }
+        });
+        
+        this.sounds = {
+            conclusion: new Audio('assets/Conclutionsound.mp3'),
+            check: new Audio('assets/check.mp3'),
+            drop: new Audio('assets/drop.mp3'),
+            knock: new Audio('assets/knock.mp3'),
+            select: new Audio('assets/select.mp3')
+        };
+    }
+    
+    playBgMusic() {
+        this.bgMusic.play().catch(e => console.log("Audio play failed:", e));
+    }
+    
+    playSound(name) {
+        if (this.sounds[name]) {
+            this.sounds[name].currentTime = 0;
+            this.sounds[name].play().catch(e => console.log("Audio play failed:", e));
         }
     }
 }
