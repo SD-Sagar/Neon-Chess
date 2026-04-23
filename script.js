@@ -839,10 +839,16 @@ class AudioController {
     constructor() {
         this.bgMusic = new Audio('assets/BackgroundMusic.mp3');
         this.bgMusic.volume = 0.35;
+        this.bgMusic.loop = true; // Enable native looping as a fallback
 
+        // Seamless gapless looping for an exact 41-second track
+        // Triggers a reset just milliseconds before the file actually ends 
+        // to bypass the tiny pause browsers usually add between MP3 loops.
         this.bgMusic.addEventListener('timeupdate', () => {
-            if (this.bgMusic.duration > 12 && this.bgMusic.currentTime >= this.bgMusic.duration - 11.5) {
+            if (this.bgMusic.duration > 0 && this.bgMusic.currentTime >= this.bgMusic.duration - 0.15) {
                 this.bgMusic.currentTime = 0;
+                // Ensure it keeps playing after the reset
+                this.bgMusic.play().catch(e => console.log("Audio play failed:", e));
             }
         });
 
