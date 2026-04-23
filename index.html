@@ -13,18 +13,14 @@
         content="Play a fully functional Cyberpunk Neon themed Chess game against AI or friends online.">
     <meta property="og:type" content="website">
     <title>Neon Cyberpunk Chess</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap"
         rel="stylesheet">
-    <!-- FontAwesome for Chess Pieces -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css?v=2">
 </head>
 
 <body>
     <div id="app">
-        <!-- Sidebar Menu -->
         <aside id="sidebar">
             <h1 class="glow-text">NEON CHESS</h1>
             <div class="menu-section mode-section">
@@ -56,7 +52,6 @@
             </div>
         </aside>
 
-        <!-- Main Game Area -->
         <main id="game-area" role="application" aria-label="Chess Game">
             <div class="player-info opponent-info">
                 <div class="captured-pieces" id="captured-black"></div>
@@ -71,14 +66,12 @@
             </div>
         </main>
 
-        <!-- Move History Sidebar -->
         <aside id="history-sidebar">
             <h2>Move History</h2>
             <div id="move-history"></div>
         </aside>
     </div>
 
-    <!-- Welcome Modal -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-content">
             <h1 class="glow-text">NEON CHESS</h1>
@@ -87,20 +80,19 @@
         </div>
     </div>
 
-    <!-- Game Over Modal -->
     <div id="game-over-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h1 id="game-over-title" class="glow-text">GAME OVER</h1>
             <p id="game-over-message" class="game-over-text"></p>
-            <button id="btn-play-again" class="modal-btn">Play Again</button>
+            <p id="game-over-countdown" class="author-text" style="margin-top: 10px; font-size: 1.1rem;">Restarting in
+                <span id="countdown-timer" class="glow-text-cyan">5</span>s...</p>
+            <button id="btn-review-board" class="modal-btn" style="margin-top: 15px;">Review Board</button>
+            <button id="btn-play-again" class="modal-btn hidden">Play Again</button>
         </div>
     </div>
 
-    <!-- Libraries -->
-    <!-- Note: chess.js v0.10.3 uses ES5. It provides a global Chess object. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.0/dist/peerjs.min.js"></script>
-    <!-- Custom Logic -->
     <script src="script.js"></script>
 </body>
 
